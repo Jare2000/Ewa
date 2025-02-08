@@ -1,38 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ewas Glitter</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ewa's Grand Fireworks</title>
 
-        <style type="text/css">
+    <!-- Google Font for Fancy Text -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
-            body {
-                background-image: url('pink background.gif');
-                /* background-image: url('pink-movable.gif'); */
-                background-size: cover; /* Ensures the image covers the entire screen */
-                background-position: center center; /* Centers the image */
-                background-repeat: no-repeat; /* Prevents the image from repeating */
-                height: 100vh; /* Ensures the body takes the full height of the viewport */
-                margin: 0; /* Removes any default margin to ensure it fills the screen */
-            }
+    <style>
+        /* Fullscreen pinkish-red background */
+        body {
+            background-color: #ff4d6d;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: 0;
+            position: relative;
+        }
 
-            h3 {
+        /* Fancy, glowing text */
+        h3 {
+            font-size: 4rem;
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive;
+            color: white;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: heartbeat 1.6s infinite alternate; /* Syncs with fireworks */
+        }
+
+        /* Heartbeat effect */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Glitter particles */
+        .glitter {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.9;
+            filter: blur(1px);
+            animation: explode linear forwards;
+        }
+
+        /* Firework explosion covering the whole screen */
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
             }
-            
-        </style>
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0.5);
+                opacity: 0;
+            }
+        }
 
-    </head>
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h3 {
+                font-size: 2.5rem;
+            }
+        }
 
-    <body>
+        @media (max-width: 480px) {
+            h3 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
 
-        <h3>Ewaoluwa Fisoye</h3>
-        
-    </body>
+<body>
+
+    <h3 id="firework-text">Ewaoluwa Fisoye</h3>
+
+    <script>
+        function createFirework() {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            for (let i = 0; i < 100; i++) { // HUGE amount of fireworks!
+                const glitter = document.createElement("div");
+                glitter.classList.add("glitter");
+
+                const angle = Math.random() * 2 * Math.PI; // Random angle
+                const distance = Math.random() * (window.innerWidth / 2); // Spread explosion across screen
+                const x = Math.cos(angle) * distance + "px";
+                const y = Math.sin(angle) * distance + "px";
+
+                glitter.style.setProperty("--x", x);
+                glitter.style.setProperty("--y", y);
+                glitter.style.left = `${centerX}px`;
+                glitter.style.top = `${centerY}px`;
+                glitter.style.animationDuration = `${Math.random() * 2 + 1}s`; // Random fade time
+
+                // Randomize size, blur, and color
+                const size = Math.random() * 10 + 5;
+                glitter.style.width = `${size}px`;
+                glitter.style.height = `${size}px`;
+                glitter.style.opacity = Math.random() * 0.8 + 0.2;
+                glitter.style.filter = `blur(${Math.random() * 3}px)`;
+                glitter.style.background = `hsl(${Math.random() * 360}, 100%, 80%)`; // Colorful burst
+
+                document.body.appendChild(glitter);
+
+                setTimeout(() => {
+                    glitter.remove();
+                }, 3000); // Remove after explosion fades
+            }
+        }
+
+        setInterval(createFirework, 1600); // Matches heartbeat rhythm (BOOM! BOOM!)
+    </script>
+
+</body>
 
 </html>
